@@ -89,6 +89,38 @@ public class SensorController {
         sensorRepository.deleteById(id);
     }
 
+    /**
+     * Ativa um sensor específico
+     *
+     * @param sensorId ID do sensor a ser ativado
+     */
+    @PatchMapping("{sensorId}/enable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enableSensor(@PathVariable TSID sensorId) {
+        Sensor sensor = sensorRepository.findById(new SensorId(sensorId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Sensor não encontrado com ID: " + sensorId));
+
+        sensor.setEnabled(true);
+        sensorRepository.saveAndFlush(sensor);
+    }
+
+    /**
+     * Desativa um sensor específico
+     *
+     * @param sensorId ID do sensor a ser desativado
+     */
+    @PatchMapping("{sensorId}/disable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disableSensor(@PathVariable TSID sensorId) {
+        Sensor sensor = sensorRepository.findById(new SensorId(sensorId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Sensor não encontrado com ID: " + sensorId));
+
+        sensor.setEnabled(false);
+        sensorRepository.saveAndFlush(sensor);
+    }
+
 
     private SensorOutput convertToModel(Sensor sensor) {
         return SensorOutput.builder()
