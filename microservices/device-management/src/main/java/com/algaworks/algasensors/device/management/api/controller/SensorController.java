@@ -8,6 +8,7 @@ import com.algaworks.algasensors.device.management.domain.model.Sensor;
 import com.algaworks.algasensors.device.management.domain.model.SensorId;
 import com.algaworks.algasensors.device.management.domain.repository.SensorRepository;
 import io.hypersistence.tsid.TSID;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +53,42 @@ public class SensorController {
 
         return convertToModel(sensor);
     }
+
+    @PutMapping("{sensorId}")
+    public SensorOutput update(@PathVariable TSID sensorId, @Valid @RequestBody SensorInput input) {
+        // Verificar se o sensor existe
+        Sensor existingSensor = sensorRepository.findById(new SensorId(sensorId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Sensor não encontrado com ID: " + sensorId));
+
+        // Atualizar todas as propriedades do sensor
+        existingSensor.setName(input.getName());
+        existingSensor.setIp(input.getIp());
+        existingSensor.setLocation(input.getLocation());
+        existingSensor.setProtocol(input.getProtocol());
+        existingSensor.setModel(input.getModel());
+
+        // Salvar as alterações
+        Sensor updatedSensor = sensorRepository.saveAndFlush(existingSensor);
+
+        // Retornar o sensor atualizado
+        return convertToModel(updatedSensor);
+    }
+
+    @DeleteMapping("{sensorId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable TSID sensorId) {
+        // Verificar se o sensor existe
+        SensorId id = new SensorId(sensorId);
+        if (!sensorRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Sensor não encontrado com ID: " + sensorId);
+        }
+
+        // Remover o sensor
+        sensorRepository.deleteById(id);
+    }
+
 
     private SensorOutput convertToModel(Sensor sensor) {
         return SensorOutput.builder()
