@@ -1,3 +1,3 @@
 [submodule "microservices/temperature-monitoring"]
 	path = microservices/temperature-monitoring
-	url = https://github.com/MAntonioST/ems-algasensors-temperature-monitoring.git
+	url = git@github.com:MAntonioST/ems-algasensors-temperature-monitoring.git
