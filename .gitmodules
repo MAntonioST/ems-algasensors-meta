@@ -1,9 +1,9 @@
-[submodule "mocroservices/temperature-monitoring"]
-	path = mocroservices/temperature-monitoring
+[submodule "microservices/temperature-monitoring"]
+	path = microservices/temperature-monitoring
 	url = git@github.com:MAntonioST/ems-algasensors-temperature-monitoring.git
-[submodule "mocroservices/temperature-processing"]
-	path = mocroservices/temperature-processing
+[submodule "microservices/temperature-processing"]
+	path = microservices/temperature-processing
 	url = git@github.com:MAntonioST/ems-algasensors-temperature-processing.git
-[submodule "mocroservices/device-management"]
-	path = mocroservices/device-management
+[submodule "microservices/device-management"]
+	path = microservices/device-management
 	url = git@github.com:MAntonioST/ems-algasensors-device-management.git
